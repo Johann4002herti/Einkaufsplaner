@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Einkauslisten</title>
+
+    <script type="module">
+        import {rezepte} from "./data.js"
+        var rezepte_aktuell = rezepte;
+
+        
+        function render(){
+
+            /*Karten einfügen*/
+            var template = "";
+
+            rezepte_aktuell.forEach(r => {
+                template += "<a href='./6.html?index="+r.link_nr+"'><div class='border' ><p>"+r.titel+"</p></div></a>";
+                
+            });
+                
+            document.querySelector("section").innerHTML = template;
+        }
+        function updateList(){
+
+            //Eingabe des Nutzers auslesen
+            var titel = document.querySelector("#rezept_input").value;
+            var link_nr = rezepte_aktuell.length;
+            console.log(link_nr);
+            var rezept_neu = {titel: titel,rezept:"", link_nr:link_nr};
+
+            //Objekt ins Array übertragen:
+            rezepte_aktuell.push(rezept_neu);
+            
+            //liste im local storage speichern
+            updatestorage();
+
+            //Ansicht neu rendern
+            render()
+
+    }
+
+        function init(){
+
+            //aktuelle Liste aus dem Local storage auslesen
+            //abfragen ob es eine liste im local storage gibt, dann diese verwenden
+            if(window.localStorage.getItem("Rezeptdaten") != null){
+
+                rezepte_aktuell = JSON.parse(window.localStorage.getItem("Rezeptdaten"))
+            }
+
+            render();
+
+            document.querySelector("#addliste_button").addEventListener("click", updateList)
+            document.querySelector("#removeliste_button").addEventListener("click", updatestorage2)
+    }
+        function updatestorage (){
+            window.localStorage.setItem("Rezeptdaten", JSON.stringify(rezepte_aktuell))
+        }
+        function updatestorage2 (){
+            window.localStorage.removeItem("Rezeptdaten");
+            location.reload()
+        }
+    window.onload = init;
+    </script>
+
+    <link href="./styles.css" rel="stylesheet">
+    <style>
+        body{height: 100%;}
+        .border{border-radius: 5px; padding: 7px; margin: 10px;color: black}
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./1.html" class="groß">
+            &#8678
+        </a>
+        <h1>Meine Rezepte</h1>
+        <div><Button id="removeliste_button">Reset</Button></div>
+    </header>
+
+    <section>
+        
+    </section>
+    <section class = "edit_section"> 
+        <p>Neues Rezept:</p>
+        <input type="text" id="rezept_input" ><br><br>
+        <Button id="addliste_button">Hinzufügen</Button>
+    </section>
+
+    <footer>
+        <p>Über diese App</p>
+    </footer>
+
+</body>
+</html>

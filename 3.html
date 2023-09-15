@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Einkauslisten</title>
+
+    <script type="module">
+        import{oberliste} from "./data.js"
+
+        var oberliste_aktuell = oberliste;
+        var i = 0;
+
+        function render(){
+            var liste = oberliste_aktuell[i];
+            
+            /*Titel einfügen*/
+            document.querySelector("#title").innerHTML = liste.titel;
+            
+            /*Karten einfügen*/
+            var template = "";
+
+            liste.güter.forEach(g=> {
+            template += "<div class='border'><p>"+g+"</p></div>" 
+
+            });
+
+            /*HTML-Code aus Variable template dynamisch in Seite einfügen*/
+            /* section selektieren*/
+            document.querySelector(".flex").innerHTML = template;
+
+            }
+
+        function updateList(){
+            //Eingabe des Nutzers auslesen
+            var gut = document.querySelector("#güter_input").value;
+
+            //Objekt ins Array übertragen:
+            oberliste_aktuell[i].güter.push(gut);
+            
+            //liste im local storage speichern
+            updatestorage()
+
+            //Ansicht neu rendern
+            render()}
+        function init(){
+            // index_parameter auslesen, der beim aufrufen dieser seite mitgeliefert wird
+            var urlparams = new URLSearchParams(window.location.search);
+            i = urlparams.get("index");
+
+            //aktuelle Liste aus dem Local storage auslesen
+            //abfragen ob es eine liste im local storage gibt, dann diese verwenden
+            if(window.localStorage.getItem("Listendaten") != null){
+
+                oberliste_aktuell = JSON.parse(window.localStorage.getItem("Listendaten"))
+            }
+
+            render();
+
+            document.querySelector("#addgut_button").addEventListener("click", updateList)
+
+
+    }
+        function updatestorage (){
+            window.localStorage.setItem("Listendaten", JSON.stringify(oberliste_aktuell))
+        }
+        
+    window.onload = init;
+    </script>
+
+    <link href="./styles.css" rel="stylesheet">
+    <style>
+        .border{padding: 7px; margin: 10px; width:100px;}
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./2.html" class="groß">
+            &#8678
+        </a>
+        <h1 id = "title"></h1>
+        <div></div>
+    </header>
+
+    <section>
+        <div class="flex">
+        </div>
+    </section>
+    <section class = "edit_section"> 
+            <p>Neues Gut:</p>
+            <input type="text" id="güter_input" ><br><br>
+            <Button id="addgut_button">Hinzufügen</Button>
+    </section>
+
+    <footer>
+        <p>Über diese App</p>
+    </footer>
+
+</body>
+</html>

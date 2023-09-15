@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Einkauslisten</title>
+
+    <script type="module">
+        import{rezepte} from "./data.js"
+
+        var rezepte_aktuell = rezepte;
+        var i = 0;
+
+        function render(){
+            var rezept = rezepte_aktuell[i];
+            
+            /*Titel einfügen*/
+            document.querySelector("#title").innerHTML = rezept.titel;
+            
+            /*Karten einfügen*/
+            var template = "";
+
+            template += "<p>"+rezept.rezept+"</p>" ;
+
+            /*HTML-Code aus Variable template dynamisch in Seite einfügen*/
+            /* section selektieren*/
+            document.querySelector(".flex").innerHTML = template;
+
+            }
+
+        function updateList(){
+            //Eingabe des Nutzers auslesen
+            var rezeptinhalt = document.querySelector("#rezept_input").value;
+
+            var rezept_neu = {titel: rezepte_aktuell[i].titel, rezept:rezeptinhalt, link_nr:rezepte_aktuell[i].link_nr};
+            //Objekt ins Array übertragen:
+            rezepte_aktuell.push(rezept_neu);
+            
+            //liste im local storage speichern
+            updatestorage()
+
+            //Ansicht neu rendern
+            render()
+
+    }
+        function init(){
+            // index_parameter auslesen, der beim aufrufen dieser seite mitgeliefert wird
+            var urlparams = new URLSearchParams(window.location.search);
+            i = urlparams.get("index");
+
+            //aktuelle Liste aus dem Local storage auslesen
+            //abfragen ob es eine liste im local storage gibt, dann diese verwenden
+            if(window.localStorage.getItem("Rezeptdaten") != null){
+
+                rezepte_aktuell = JSON.parse(window.localStorage.getItem("Rezeptdaten"))
+            }
+
+            render();
+
+            document.querySelector("#addrezept_button").addEventListener("click", updateList)
+
+    }
+        function updatestorage (){
+            window.localStorage.setItem("Rezeptdaten", JSON.stringify(rezepte_aktuell))
+        }
+    window.onload = init;
+    </script>
+
+    <link href="./styles.css" rel="stylesheet">
+    <style>
+        .border{padding: 7px; margin: 10px; width:100px;}
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./5.html" class="groß">
+            &#8678
+        </a>
+        <h1 id = "title"></h1>
+        <div></div>
+    </header>
+
+    <section>
+        <div class="flex">
+        </div>
+    </section>
+    <section class = "edit_section"> 
+        <textarea id="rezept_input"></textarea><br><br>
+        <Button id="addrezept_button">Hinzufügen</Button>
+    </section>
+
+    <footer>
+        <p>Über diese App</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Einkauslisten</title>
+    <Script>
+        var listen = [
+            {tag: "Montag",
+            mahlzeiten: ["Mein Fit-in-den-Tag Frühstück","Nudeln mit Tomatensoße","Pizza"],
+            artm: ["Rezept","Mensa","Bestellen",]
+            },
+            {tag: "Dienstag",
+            mahlzeiten: ["Mein Fit-in-den-Tag Frühstück","Kartoffelpüree mit Spinat","Pizza"],
+            artm: ["Rezept","Mensa","Bestellen",]
+            },
+            {tag: "Mittwoch",
+            mahlzeiten: ["Mein Fit-in-den-Tag Frühstück","Nudeln mit Tomatensoße","Pizza"],
+            artm: ["Rezept","Mensa","Bestellen",]
+            },
+            {tag: "Donnerstag",
+            mahlzeiten: ["Mein Fit-in-den-Tag Frühstück","Nudeln mit Tomatensoße","Pizza"],
+            artm: ["Rezept","Mensa","Bestellen",]
+            },
+            {tag: "Freitag",
+            mahlzeiten: ["Mein Fit-in-den-Tag Frühstück","Nudeln mit Tomatensoße","Pizza"],
+            artm: ["Rezept","Mensa","Bestellen",]
+            },
+        ]
+        
+        function render(){
+            var template = "";
+            
+            listen.forEach(l => {
+                template += "<div><div class='border'><p>"+l.tag+"</p></div><div class='mahlzeiten'><div class='bold'>Früh</div><div class='flex2'>"+l.mahlzeiten[0]+"<div class='oval center'>"+l.artm[0]+"</div></div></div><div class='mahlzeiten'><div class='bold'>Mittag</div><div class='flex2'>"+l.mahlzeiten[1]+"<div class='oval center'>"+l.artm[1]+"</div></div></div><div class='mahlzeiten'><div class='bold'>Abends</div><div class='flex2'>"+l.mahlzeiten[2]+"<div class='oval center'>"+l.artm[2]+"</div></div></div>"
+            })
+            
+            document.querySelector("section").innerHTML += template
+        }
+        window.onload = render
+    </Script>
+    <link href="./styles.css" rel="stylesheet">
+    <style>
+        body{min-height: 100%;}
+        section{display: flex;flex-direction:column; justify-content:flex-start;width: 100%;}
+        .border{padding: 7px; margin: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./1.html" class="groß"> &#8678 </a>
+        <h1>Meine Mahlzeiten</h1>
+        <div></div>
+    </header>
+
+    <section>
+        
+    </section>
+
+    <footer>
+        <p>Über diese App</p>
+    </footer>
+
+</body>
+</html>
